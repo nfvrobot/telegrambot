@@ -1,4 +1,4 @@
-package com.chernyavsky.telgram.bot;
+package com.chernyavsky.telegram.bot;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ public class Bot extends TelegramLongPollingBot {
             SendMessage response = new SendMessage();
             Long chatId = message.getChatId();
             response.setChatId(String.valueOf(chatId));
-            String text = "Hello there!";
+            String text = "Hello there!" + message.getText();
             response.setText(text);
             try {
                 execute(response);
