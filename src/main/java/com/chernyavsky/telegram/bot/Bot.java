@@ -1,5 +1,7 @@
 package com.chernyavsky.telegram.bot;
 
+import com.chernyavsky.telegram.dto.CityDto;
+import com.chernyavsky.telegram.util.TelegramUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,8 @@ public class Bot extends TelegramLongPollingBot {
 
     private static final Logger log = Logger.getLogger(Bot.class);
 
+
+
     @Value("${bot.name}")
     private String name;
 
@@ -27,15 +31,16 @@ public class Bot extends TelegramLongPollingBot {
         log.debug("Receive new Update. updateID: " + update.getUpdateId());
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            SendMessage response = new SendMessage();
-            Long chatId = message.getChatId();
-            response.setChatId(String.valueOf(chatId));
-            String text = "Hello there!" + message.getText();
-            response.setText(text);
+            SendMessage response = TelegramUtil.createMessageTemplate(message);
+            CityDto cityDto = UpdateReceiver.handle(update);
+            if (cityDto == null) {
+                response.setText("Такого города нет в базе...");
+            }
+            response.setText(cityDto.getInfo());
             try {
                 execute(response);
-                log.info("Sent message " + text + " to: " + chatId);
-            } catch (TelegramApiException e) {
+                log.info("Sent message " + " to: " + message.getChatId());
+            } catch (TelegramApiException | IllegalArgumentException e) {
                 log.error("Failed to send message due to error: " + e.getMessage());
             }
         }

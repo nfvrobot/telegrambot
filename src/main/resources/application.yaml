@@ -1,0 +1,15 @@
+bot:
+  name: InCityHelperBot
+  token: 1549550585:AAEmcwckX67TF2FwS_ETj-rlpiw1HAG_XUI
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-34-254-69-72.eu-west-1.compute.amazonaws.com:5432/dbdccuhd7jlgq6
+    username: pgkhkcoogutrca
+    password: 8d3974dedabedc364d1243c75f1baceb3ed1a868d2e71a80e41e40232a6ac7a7
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: never
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
